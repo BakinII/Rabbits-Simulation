@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.example.model.Habitat;
 import org.example.view.MainFrame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,7 +31,38 @@ public class Controller {
         this.timer = new Timer();
         this.isSimulationRunning = false;
         this.keyboardInput = new KeyboardInput(this);
+
+        mainFrame.addListenerStartKey(new ButtonStartListener());
+        mainFrame.addListenerStopKey(new ButtonStopListener());
+        mainFrame.addListenerTimeKey(new ButtonInformationListener());
         init();
+    }
+
+    private class ButtonStartListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           setSimulationRunning(true);
+           hideSimulationInformation();
+        }
+    }
+
+    private class ButtonStopListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showSimulationInformation();
+            setSimulationRunning(false);
+            resetSimulation();
+        }
+    }
+
+    private class ButtonInformationListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            changeViewTimeVisibility();
+        }
     }
 
     private void init() {

@@ -11,9 +11,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class ChangeListenerDto {
-    private List<Rabbit> rabbitList;
-    private double time;
 
+    private double time;
     private int quantityRabbitClassic;
     private int quantityRabbitAlbino;
 

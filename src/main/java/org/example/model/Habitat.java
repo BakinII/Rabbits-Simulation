@@ -17,7 +17,7 @@ public class Habitat {
     private double lastUpdateTime;
     private double lastSpawnRabbitClassic;
     private double lastSpawnRabbitAlbino;
-    private List<Rabbit> rabbits;
+
     private double quantityRabbitClassic;
     private double quantityRabbitAlbino;
     private boolean rabbitSpawned;
@@ -31,7 +31,6 @@ public class Habitat {
         this.rabbitAlbinoBornProportionCondition = rabbitAlbinoBornProportionCondition;
         this.width = width;
         this.height = height;
-        this.rabbits = new ArrayList<>();
         this.lastUpdateTime = 0;
         this.lastSpawnRabbitClassic = 0;
         this.lastSpawnRabbitAlbino = 0;
@@ -39,6 +38,7 @@ public class Habitat {
         this.quantityRabbitAlbino = 0;
         this.rabbitSpawned = false;
         this.listeners = new ArrayList<>();
+
     }
 
     public void update(double time) {
@@ -71,7 +71,9 @@ public class Habitat {
     private RabbitAlbino spawnRabbitAlbino() {
         RabbitAlbino rabbitAlbino = new RabbitAlbino();
         setRabbitCoordinates(rabbitAlbino);
-        rabbits.add(rabbitAlbino);
+        RabbitList.getInstance().addRabbit(rabbitAlbino);
+
+
         quantityRabbitAlbino++;
         rabbitSpawned = true;
         return rabbitAlbino;
@@ -80,7 +82,10 @@ public class Habitat {
     private RabbitClassic spawnRabbitClassic() {
         RabbitClassic rabbitClassic = new RabbitClassic();
         setRabbitCoordinates(rabbitClassic);
-        rabbits.add(rabbitClassic);
+
+        RabbitList.getInstance().addRabbit(rabbitClassic);
+
+
         quantityRabbitClassic++;
         rabbitSpawned = true;
         return rabbitClassic;
@@ -102,7 +107,8 @@ public class Habitat {
     }
 
     public void resetSimulation() {
-        rabbits.clear();
+        RabbitList.getInstance().clearRabbits();
+
         notifyListeners(createChangeListenerDto(lastUpdateTime));
         //lastUpdateTime = 0.0;
         lastUpdateTime = 0.0;
@@ -114,6 +120,6 @@ public class Habitat {
     }
 
     private ChangeListenerDto createChangeListenerDto(double time) {
-        return new ChangeListenerDto(rabbits, time, (int) quantityRabbitClassic, (int) quantityRabbitAlbino);
+        return new ChangeListenerDto( time, (int) quantityRabbitClassic, (int) quantityRabbitAlbino);
     }
 }

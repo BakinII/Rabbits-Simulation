@@ -3,6 +3,7 @@ package org.example.view.panel;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.model.Rabbit;
+import org.example.model.RabbitList;
 import org.example.view.PhotoFactory;
 import org.example.view.util.RabbitImageConverter;
 
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Panel extends JPanel {
-    private List<Rabbit> rabbitList;
+    //private List<Rabbit> rabbitList;
+
+    private RabbitList rabbitList;
+
     private PhotoFactory photoFactory;
     private RabbitImageConverter rabbitImageConverter;
     private int quantityRabbitClassic;
@@ -27,7 +31,7 @@ public class Panel extends JPanel {
     private boolean simulationInformation;
 
     public Panel() {
-        this.rabbitList = new ArrayList<>();
+
         this.photoFactory = new PhotoFactory();
         this.rabbitImageConverter = new RabbitImageConverter(photoFactory);
 
@@ -37,13 +41,15 @@ public class Panel extends JPanel {
 
         this.quantityRabbitClassic = 0;
         this.quantityRabbitAlbino = 0;
+
+
     }
 
     public void paint(Graphics g) {
         g = (Graphics2D) g;
         g.drawImage(photoFactory.getPhotoBackground(), 0, 0, null);
 
-        for (Rabbit rabbit : rabbitList) {
+        for (Rabbit rabbit : RabbitList.getInstance().getRabbitList()) {
             g.drawImage(rabbitImageConverter.convert(rabbit), rabbit.getX(), rabbit.getY(), null);
         }
 
@@ -65,10 +71,6 @@ public class Panel extends JPanel {
 
     }
 
-    public void updateRabbits(List<Rabbit> rabbits) {
-        rabbitList = rabbits;
-        repaint();
-    }
 
     public void updateTime(double time) {
         this.time = time;
