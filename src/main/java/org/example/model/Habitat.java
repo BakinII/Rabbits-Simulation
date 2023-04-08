@@ -1,5 +1,6 @@
 package org.example.model;
 
+import lombok.Setter;
 import org.example.view.listener.ChangeListenerDto;
 import org.example.view.listener.Listener;
 
@@ -8,10 +9,14 @@ import java.util.List;
 import java.util.Random;
 
 public class Habitat {
-    private final int rabbitClassicBornPeriod;
-    private final double rabbitClassicBornProbability;
-    private final int rabbitAlbinoBornPeriod;
-    private final double rabbitAlbinoBornProportionCondition;
+    @Setter
+    private int rabbitClassicBornPeriod;
+    @Setter
+    private double rabbitClassicBornProbability;
+    @Setter
+    private int rabbitAlbinoBornPeriod;
+    @Setter
+    private double rabbitAlbinoBornProportionCondition;
     private int width;
     private int height;
     private double lastUpdateTime;
@@ -120,6 +125,6 @@ public class Habitat {
     }
 
     private ChangeListenerDto createChangeListenerDto(double time) {
-        return new ChangeListenerDto( time, (int) quantityRabbitClassic, (int) quantityRabbitAlbino);
+        return new ChangeListenerDto(time, (int) quantityRabbitClassic, (int) quantityRabbitAlbino);
     }
 }

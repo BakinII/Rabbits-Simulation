@@ -26,9 +26,11 @@ public class KeyboardInput implements KeyListener {
             controller.changeViewTimeVisibility();
         }
         if (keyChar == 'e') {
-            controller.showSimulationInformation();
             controller.setSimulationRunning(false);
-            controller.resetSimulation();
+            controller.showSimulationInformation();
+            if (controller.getMainFrame().isResetSimulation()) {
+                controller.resetSimulation();
+            } else controller.setSimulationRunning(true);
         }
     }
 
