@@ -77,6 +77,7 @@ public class ControlPanel extends JPanel {
         this.add(startButton, gbc);
 
         gbc.gridx = 0;
+        //gbc.gridx = 1;
         gbc.gridy = 0;
         stopButton.setBackground(Color.red);
         this.add(stopButton, gbc);
@@ -248,7 +249,7 @@ public class ControlPanel extends JPanel {
     }
 
     public int getRabbitAlbinoText() {
-        int spawnRabbitAlbinoPeriod = 0;
+        int spawnRabbitAlbinoPeriod;
         int defaultValue = 1;
         try {
             spawnRabbitAlbinoPeriod = Integer.parseInt(rabbitAlbinoBornPeriodText.getText());
