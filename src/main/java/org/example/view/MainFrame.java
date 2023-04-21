@@ -3,16 +3,19 @@ package org.example.view;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.model.Rabbit;
+import org.example.model.RabbitList;
 import org.example.view.listener.ChangeListenerDto;
 import org.example.view.listener.Listener;
 import org.example.view.panel.ControlPanel;
-import org.example.view.panel.Dialog;
 import org.example.view.panel.MenuBar;
 import org.example.view.panel.Panel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Vector;
 
 
 public class MainFrame extends JFrame implements Listener {
@@ -32,6 +35,9 @@ public class MainFrame extends JFrame implements Listener {
     @Getter
     @Setter
     private boolean isResetSimulation;
+    @Getter
+    @Setter
+    private boolean showCollectionDialog;
 
 
     public MainFrame() {
@@ -40,11 +46,14 @@ public class MainFrame extends JFrame implements Listener {
         this.time = 0;
         this.showDialogWindow = false;
         this.simulationStop = false;
-
+        this.showCollectionDialog = false;
         this.isResetSimulation = true;
 
         panel = new Panel();
         ImageIcon travaImageIcon = new ImageIcon("src\\main\\resources\\trava.png");
+        //ImageIcon travaImageIcon = new ImageIcon("D:\\TMP\\3lab\\Rabbits-Simulation-main\\src\\main\\resources\\trava.png");
+
+
         int iconWidth = travaImageIcon.getIconWidth();
         int iconHeight = travaImageIcon.getIconHeight();
 
@@ -92,11 +101,25 @@ public class MainFrame extends JFrame implements Listener {
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
             if (dialogResult == JOptionPane.OK_OPTION) {
                 isResetSimulation = true;
+                controlPanel.setSimulationRunning(false);
             }
             if (dialogResult == JOptionPane.CANCEL_OPTION) {
                 isResetSimulation = false;
+                controlPanel.setSimulationRunning(true);
+
             }
         }
+        //if(showCollectionDialog){
+
+//            HashMap<Integer,Integer> rabbits = RabbitList.getInstance().getHashMapRabbit();
+//
+//            String message = "Id Кролика : Время Рождения"+ "\n";
+//            for (Integer key : rabbits.keySet()) {
+//                message += key + " : " + rabbits.get(key) + "\n";
+//            }
+//
+//            JOptionPane.showMessageDialog(null,message,"HashMap", JOptionPane.INFORMATION_MESSAGE);
+//        }
     }
 
     @Override
@@ -168,14 +191,29 @@ public class MainFrame extends JFrame implements Listener {
     public void addListenerRabbitClassicText(ActionListener actionListener) {
         controlPanel.addListenerRabbitClassicText(actionListener);
     }
-
-
+    public void addListenerRabbitClassicLifeTimeText(ActionListener actionListener) {
+        controlPanel.addListenerRabbitClassicLifeTimeText(actionListener);
+    }
+    public void addListenerRabbitAlbinoLifeTimeText(ActionListener actionListener) {
+        controlPanel.addListenerRabbitAlbinoLifeTimeText(actionListener);
+    }
+    public void addListenerCurrentObjectButton(ActionListener actionListener) {
+        controlPanel.addListenerCurrentObjectButton(actionListener);
+    }
     public int getRabbitAlbinoText() {
         return controlPanel.getRabbitAlbinoText();
     }
 
     public int getRabbitClassicText() {
         return controlPanel.getRabbitClassicText();
+    }
+
+    public int getRabbitClassicRabbitClassicLifeTimeText(){
+        return controlPanel.getRabbitClassicRabbitClassicLifeTimeText();
+    }
+
+    public int getRabbitAlbinoLifeTimeText(){
+        return controlPanel.getRabbitAlbinoLifeTimeText();
     }
 
     public void setFocusTextRabbitAlbino() {
@@ -186,6 +224,12 @@ public class MainFrame extends JFrame implements Listener {
         controlPanel.setFocusTextRabbitClassic();
     }
 
+    public void setFocusTextRabbitClassicLifeTime() {
+        controlPanel.setFocusTextRabbitClassicLifeTime();
+    }
+    public void setFocusTextRabbitAlbinoLifeTime() {
+        controlPanel.setFocusTextRabbitAlbinoLifeTime();
+    }
     public double getRabbitClassicProbability() {
         return controlPanel.getRabbitClassicProbability();
     }

@@ -3,10 +3,13 @@ package org.example.controller;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.model.Habitat;
+import org.example.model.RabbitList;
 import org.example.view.MainFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,13 +17,12 @@ public class Controller {
     private static final int TIMER_TICK_VALUE = 1000;
     private static final int TIMER_DELAY_VALUE = 0;
     private Habitat habitat;
-    @Setter
-    @Getter
     private MainFrame mainFrame;
     private double time;
     private Timer timer;
     private KeyboardInput keyboardInput;
     @Setter
+    @Getter
     private boolean isSimulationRunning;
     @Setter
     @Getter
@@ -46,6 +48,9 @@ public class Controller {
         mainFrame.addListenerShowKey(new ButtonShowInformationListener());
         mainFrame.addListenerRabbitAlbinoText(new RabbitAlbinoTextListener());
         mainFrame.addListenerRabbitClassicText(new RabbitClassicTextListener());
+        mainFrame.addListenerRabbitClassicLifeTimeText(new RabbitClassicLifeTimeTextListener());
+        mainFrame.addListenerRabbitAlbinoLifeTimeText(new RabbitAlbinoLifeTimeTextListener());
+        mainFrame.addListenerCurrentObjectButton(new CurrentObjectButtonListener());
         init();
     }
 
@@ -67,6 +72,24 @@ public class Controller {
             if (mainFrame.isResetSimulation()) {
                 resetSimulation();
             } else setSimulationRunning(true);
+
+        }
+    }
+
+    private class CurrentObjectButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //mainFrame.setShowCollectionDialog(!mainFrame.isShowCollectionDialog());
+
+            HashMap<Integer,Integer> rabbits = RabbitList.getInstance().getHashMapRabbit();
+
+            String message = "Id Кролика : Время Рождения"+ "\n";
+            for (Integer key : rabbits.keySet()) {
+                message += key + " : " + rabbits.get(key) + "\n";
+            }
+
+            JOptionPane.showMessageDialog(null,message,"HashMap", JOptionPane.INFORMATION_MESSAGE);
 
         }
     }
@@ -117,6 +140,29 @@ public class Controller {
             int newRabbitClassicBornPeriod = mainFrame.getRabbitClassicText();
             habitat.setRabbitClassicBornPeriod(newRabbitClassicBornPeriod);
             mainFrame.setFocusTextRabbitClassic();
+        }
+    }
+
+    private class RabbitClassicLifeTimeTextListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //int rabbitAlbinoBornPeriod = 1;
+
+            int newRabbitClassicLifeTime = mainFrame.getRabbitClassicRabbitClassicLifeTimeText();
+            habitat.setRabbitClassicLifeTime(newRabbitClassicLifeTime);
+            mainFrame.setFocusTextRabbitClassicLifeTime();
+        }
+    }
+    private class RabbitAlbinoLifeTimeTextListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //int rabbitAlbinoBornPeriod = 1;
+
+            int newRabbitAlbinoLifeTime = mainFrame.getRabbitAlbinoLifeTimeText();
+            habitat.setRabbitAlbinoLifeTime(newRabbitAlbinoLifeTime);
+            mainFrame.setFocusTextRabbitAlbinoLifeTime();
         }
     }
 
@@ -177,4 +223,8 @@ public class Controller {
     public void hideSimulationInformation() {
         mainFrame.hideSimulationInformation();
     }
+    public boolean getSimulationResetInformation(){
+        return mainFrame.isResetSimulation();
+    }
 }
+

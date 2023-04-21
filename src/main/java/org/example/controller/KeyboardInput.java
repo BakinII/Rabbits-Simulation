@@ -28,7 +28,7 @@ public class KeyboardInput implements KeyListener {
         if (keyChar == 'e') {
             controller.setSimulationRunning(false);
             controller.showSimulationInformation();
-            if (controller.getMainFrame().isResetSimulation()) {
+            if (controller.getSimulationResetInformation()) {
                 controller.resetSimulation();
             } else controller.setSimulationRunning(true);
         }

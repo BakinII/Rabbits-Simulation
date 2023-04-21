@@ -23,6 +23,7 @@ public class ControlPanel extends JPanel {
     PhotoFactory photoFactory;
     JButton startButton = new JButton("Старт");
     JButton stopButton = new JButton("Стоп");
+    JButton currentObjectsButton = new JButton("Текущие объекты");
 
     JRadioButton showTimeButton = new JRadioButton("Показывать время");
     JRadioButton hideTimeButton = new JRadioButton("Скрывать время");
@@ -33,6 +34,8 @@ public class ControlPanel extends JPanel {
 
     JTextField rabbitClassicBornPeriodText = new JTextField();
     JTextField rabbitAlbinoBornPeriodText = new JTextField();
+    JTextField rabbitClassicLifeTimeText = new JTextField();
+    JTextField rabbitAlbinoLifeTimeText = new JTextField();
 
 
     JComboBox<Integer> rabbitClassicBornProbabilityInput = new JComboBox<>();
@@ -50,6 +53,7 @@ public class ControlPanel extends JPanel {
 
         startButton.setFocusable(false);
         stopButton.setFocusable(false);
+        currentObjectsButton.setFocusable(false);
 
         showTimeButton.setFocusable(false);
         hideTimeButton.setFocusable(false);
@@ -69,17 +73,23 @@ public class ControlPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
+        startButton.setBackground(Color.green);
         this.add(startButton, gbc);
 
-        //gbc.gridx = 0;
-        gbc.gridx = 1;
+        gbc.gridx = 0;
+        //gbc.gridx = 1;
         gbc.gridy = 0;
+        stopButton.setBackground(Color.red);
         this.add(stopButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
+        Font font = new Font("Times New Roman", Font.BOLD, 20);
+        showTimeButton.setFont(font);
         this.add(showTimeButton, gbc);
+
+        hideTimeButton.setFont(font);
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
@@ -88,33 +98,36 @@ public class ControlPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
+        Font font1 = new Font("Times New Roman", Font.BOLD, 20);
+        showDialogMessage.setFont(font1);
         this.add(showDialogMessage, gbc);
 
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        JLabel rabbitAlbinoLabel = new JLabel("Rabbit Albino Spawn Period (sec)");
+        JLabel rabbitAlbinoLabel = new JLabel("Период появления кроликов альбиносов(сек)");
         this.add(rabbitAlbinoLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
         rabbitAlbinoBornPeriodText.setPreferredSize(new Dimension(100, 25));
+        rabbitAlbinoBornPeriodText.setText("1");
         this.add(rabbitAlbinoBornPeriodText, gbc);
-
 
         gbc.gridx = 0;
         gbc.gridy = 6;
-        JLabel rabbitClassicLabel = new JLabel("Rabbit Classic Spawn Period (sec)");
+        JLabel rabbitClassicLabel = new JLabel("Период появления обычных кроликов(сек)");
         this.add(rabbitClassicLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 7;
         rabbitClassicBornPeriodText.setPreferredSize(new Dimension(100, 25));
+        rabbitClassicBornPeriodText.setText("1");
         this.add(rabbitClassicBornPeriodText, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 8;
-        JLabel RabbitAlbinoSpawnChanceLabel = new JLabel("Rabbit Albino Born Probability (%)");
+        JLabel RabbitAlbinoSpawnChanceLabel = new JLabel("Условие рождения кроликов альбиносов (%)");
         this.add(RabbitAlbinoSpawnChanceLabel, gbc);
 
         gbc.gridx = 0;
@@ -126,7 +139,7 @@ public class ControlPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 10;
-        JLabel RabbitClassicSpawnChanceLabel = new JLabel("Rabbit Classic Born Probability (%)");
+        JLabel RabbitClassicSpawnChanceLabel = new JLabel("Вероятность появления обычного кролика (%)");
         rabbitAlbinoBornProbabilityInput.setSelectedIndex(5);
         this.add(RabbitClassicSpawnChanceLabel, gbc);
 
@@ -138,6 +151,31 @@ public class ControlPanel extends JPanel {
         rabbitClassicBornProbabilityInput.setSelectedIndex(5);
         this.add(rabbitClassicBornProbabilityInput, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 12;
+        JLabel rabbitAlbinoLifeTimeLabel = new JLabel("Время жизни кроликов альбиносов(сек)");
+        this.add(rabbitAlbinoLifeTimeLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 13;
+        rabbitAlbinoLifeTimeText.setPreferredSize(new Dimension(100, 25));
+        rabbitAlbinoLifeTimeText.setText("5");
+        this.add(rabbitAlbinoLifeTimeText, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 14;
+        JLabel rabbitClassicLifeTimeLabel = new JLabel("Время жизни обычных кроликов (сек)");
+        this.add(rabbitClassicLifeTimeLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 15;
+        rabbitClassicLifeTimeText.setPreferredSize(new Dimension(100, 25));
+        rabbitClassicLifeTimeText.setText("5");
+        this.add(rabbitClassicLifeTimeText, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 16;
+        this.add(currentObjectsButton, gbc);
 
         this.repaint();
     }
@@ -147,13 +185,13 @@ public class ControlPanel extends JPanel {
         super.paintComponent(g);
         //g.drawImage(photoFactory.getPhotoMisata(), 0, 0, null);
 
-        //if (simulationRunning) {
-        stopButton.setVisible(true);
-        //    startButton.setVisible(false);
-        // } else {
-        //    stopButton.setVisible(false);
-        startButton.setVisible(true);
-        //}
+        if (simulationRunning) {
+            stopButton.setVisible(true);
+            startButton.setVisible(false);
+        } else {
+            stopButton.setVisible(false);
+            startButton.setVisible(true);
+        }
 
         if (timeShow) {
             Font font = new Font("Arial", Font.BOLD, 20);
@@ -192,6 +230,17 @@ public class ControlPanel extends JPanel {
         rabbitClassicBornPeriodText.addActionListener(actionListener);
     }
 
+    public void addListenerRabbitClassicLifeTimeText(ActionListener actionListener) {
+        rabbitClassicLifeTimeText.addActionListener(actionListener);
+    }
+    public void addListenerRabbitAlbinoLifeTimeText(ActionListener actionListener) {
+        rabbitAlbinoLifeTimeText.addActionListener(actionListener);
+    }
+
+    public void addListenerCurrentObjectButton(ActionListener actionListener) {
+        currentObjectsButton.addActionListener(actionListener);
+    }
+
     public void updateData(int quantityRabbitAlbino, int quantityRabbitClassic, double time) {
         this.quantityRabbitAlbino = quantityRabbitAlbino;
         this.quantityRabbitClassic = quantityRabbitClassic;
@@ -210,7 +259,7 @@ public class ControlPanel extends JPanel {
         } catch (NumberFormatException e) {
             spawnRabbitAlbinoPeriod = defaultValue;
             rabbitAlbinoBornPeriodText.setText(String.valueOf(spawnRabbitAlbinoPeriod));
-            JOptionPane.showMessageDialog(this, "Invalid spawn period! Using default value: " + defaultValue, "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Неправильное время рождения, значение по умолчанию: " + defaultValue, "Error", JOptionPane.ERROR_MESSAGE);
         }
         return spawnRabbitAlbinoPeriod;
     }
@@ -226,9 +275,40 @@ public class ControlPanel extends JPanel {
         } catch (NumberFormatException e) {
             spawnRabbitClassicPeriod = defaultValue;
             rabbitClassicBornPeriodText.setText(String.valueOf(spawnRabbitClassicPeriod));
-            JOptionPane.showMessageDialog(this, "Invalid spawn period! Using default value: " + defaultValue, "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Неправильное время рождения, значение по умолчанию: " + defaultValue, "Error", JOptionPane.ERROR_MESSAGE);
         }
         return spawnRabbitClassicPeriod;
+    }
+
+    public int getRabbitClassicRabbitClassicLifeTimeText(){
+        int RabbitClassicLifeTime;
+        int defaultValue = 5;
+        try {
+            RabbitClassicLifeTime = Integer.parseInt(rabbitClassicLifeTimeText.getText());
+            if (RabbitClassicLifeTime <= 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            RabbitClassicLifeTime = defaultValue;
+            rabbitClassicLifeTimeText.setText(String.valueOf(RabbitClassicLifeTime));
+            JOptionPane.showMessageDialog(this, "Неправильное время жизни, значение по умолчанию: " + defaultValue, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return RabbitClassicLifeTime;
+    }
+    public int getRabbitAlbinoLifeTimeText(){
+        int RabbitAlbinoLifeTime;
+        int defaultValue = 5;
+        try {
+            RabbitAlbinoLifeTime = Integer.parseInt(rabbitAlbinoLifeTimeText.getText());
+            if (RabbitAlbinoLifeTime <= 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            RabbitAlbinoLifeTime = defaultValue;
+            rabbitAlbinoLifeTimeText.setText(String.valueOf(RabbitAlbinoLifeTime));
+            JOptionPane.showMessageDialog(this, "Неправильное время жизни, значение по умолчанию: " + defaultValue, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return RabbitAlbinoLifeTime;
     }
 
     public void setFocusTextRabbitAlbino() {
@@ -239,6 +319,12 @@ public class ControlPanel extends JPanel {
         rabbitClassicBornPeriodText.setFocusable(false);
     }
 
+    public void setFocusTextRabbitClassicLifeTime() {
+        rabbitClassicLifeTimeText.setFocusable(false);
+    }
+    public void setFocusTextRabbitAlbinoLifeTime() {
+        rabbitAlbinoLifeTimeText.setFocusable(false);
+    }
     public double getRabbitClassicProbability() {
         return Double.parseDouble(String.valueOf(rabbitClassicBornProbabilityInput.getSelectedItem())) / 100;
     }

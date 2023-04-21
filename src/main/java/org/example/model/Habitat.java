@@ -17,6 +17,10 @@ public class Habitat {
     private int rabbitAlbinoBornPeriod;
     @Setter
     private double rabbitAlbinoBornProportionCondition;
+    @Setter
+    private int rabbitClassicLifeTime;
+    @Setter
+    private int rabbitAlbinoLifeTime;
     private int width;
     private int height;
     private double lastUpdateTime;
@@ -34,6 +38,8 @@ public class Habitat {
         this.rabbitClassicBornProbability = rabbitClassicBornProbability;
         this.rabbitAlbinoBornPeriod = rabbitAlbinoBornPeriod;
         this.rabbitAlbinoBornProportionCondition = rabbitAlbinoBornProportionCondition;
+        this.rabbitClassicLifeTime = 5;
+        this.rabbitAlbinoLifeTime = 5;
         this.width = width;
         this.height = height;
         this.lastUpdateTime = 0;
@@ -58,6 +64,7 @@ public class Habitat {
     }
 
     private void simulateStep(double time) {
+        checkLifeTimeRabbit();
         if (time - lastSpawnRabbitAlbino >= rabbitAlbinoBornPeriod &&
                 quantityRabbitAlbino / quantityRabbitClassic < rabbitAlbinoBornProportionCondition) {
             spawnRabbitAlbino();
@@ -76,6 +83,8 @@ public class Habitat {
     private RabbitAlbino spawnRabbitAlbino() {
         RabbitAlbino rabbitAlbino = new RabbitAlbino();
         setRabbitCoordinates(rabbitAlbino);
+        setRabbitBornTime(rabbitAlbino);
+        setRabbitID(rabbitAlbino);
         RabbitList.getInstance().addRabbit(rabbitAlbino);
 
 
@@ -87,7 +96,8 @@ public class Habitat {
     private RabbitClassic spawnRabbitClassic() {
         RabbitClassic rabbitClassic = new RabbitClassic();
         setRabbitCoordinates(rabbitClassic);
-
+        setRabbitBornTime(rabbitClassic);
+        setRabbitID(rabbitClassic);
         RabbitList.getInstance().addRabbit(rabbitClassic);
 
 
@@ -102,7 +112,16 @@ public class Habitat {
         int y = rand.nextInt(height);
         rabbit.setCoordinates(x, y);
     }
-
+    private void setRabbitBornTime(Rabbit rabbit){
+        rabbit.setBornTime((int) this.lastUpdateTime);
+    }
+    private void setRabbitID(Rabbit rabbit){
+        Random rand = new Random();
+        int id = rand.nextInt(1000);
+        while (!RabbitList.getInstance().checkId(id)){
+            id= rand.nextInt(1000);}
+        rabbit.setId(id);
+    }
     public void addListener(Listener listener) {
         listeners.add(listener);
     }
@@ -124,6 +143,9 @@ public class Habitat {
         rabbitSpawned = false;
     }
 
+    private void checkLifeTimeRabbit(){
+        RabbitList.getInstance().checkRabbitLifeTime(rabbitAlbinoLifeTime,rabbitClassicLifeTime, (int)lastUpdateTime);
+    }
     private ChangeListenerDto createChangeListenerDto(double time) {
         return new ChangeListenerDto(time, (int) quantityRabbitClassic, (int) quantityRabbitAlbino);
     }
